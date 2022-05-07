@@ -18,3 +18,10 @@
     color: orange;
     border-color: orange;
 }
+
+.shopping-cart {
+    background-color: #969ba52c;
+    position: fixed;
+    top: 0px;
+    right: 10px;
+}

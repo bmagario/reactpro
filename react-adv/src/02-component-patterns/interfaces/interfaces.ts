@@ -23,3 +23,12 @@ export interface IProduct {
 	price?: number;
 	image?: string;
 }
+
+export interface onChangeArgs {
+	product: IProduct;
+	quantity: number;
+}
+
+export interface IProductInCart extends IProduct {
+	quantity: number;
+}
