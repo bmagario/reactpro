@@ -1,41 +1,57 @@
-import { onChangeArgs, IProduct } from './../interfaces/interfaces';
-import { useEffect, useRef, useState } from 'react';
+import { onChangeArgs, IProduct, InitialValues } from './../interfaces/interfaces';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 interface IUseCounterProps {
 	onChange?: (args: onChangeArgs) => void;
 	product: IProduct;
 	value?: number;
+	initialValues?: InitialValues;
 }
-export const useCounter = ({ onChange, product, value = 0 }: IUseCounterProps) => {
-	const [counter, setCounter] = useState(value);
-
+export const useCounter = ({ onChange, product, value = 0, initialValues }: IUseCounterProps) => {
+	const [counter, setCounter] = useState(initialValues?.quantity || value);
 	const isControlled = useRef(!!onChange);
+	const isMounted = useRef(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		if(!isMounted.current) return;
 		setCounter(value);
 	}, [value]);
 
+	useLayoutEffect(() => {
+		isMounted.current = true;
+	}, []);
+
 	const increase = () => {
-		if(isControlled.current) {
-			return onChange!({ product, quantity: counter + 1 });
+		let newValue = counter + 1;
+		if(initialValues?.maxCount) {
+			newValue = Math.min(newValue, initialValues.maxCount);
 		}
-		const newValue = counter + 1;
+
+		if(isControlled.current) {
+			return onChange!({ product, quantity: newValue });
+		}
+
 		setCounter(newValue);
 		onChange && onChange({ product, quantity: newValue });
 	}
 
 	const decrease = () => {
-		if(isControlled.current) {
-			return onChange!({ product, quantity: Math.max(counter - 1, 0) });
-		}
 		const newValue = Math.max(counter - 1, 0);
+		if(isControlled.current) {
+			return onChange!({ product, quantity: newValue });
+		}
 		setCounter(newValue);
 		onChange && onChange({ product, quantity: newValue });
+	}
+
+	const reset = () => {
+		setCounter(initialValues?.quantity || value);
 	}
 
 	return {
 		counter,
 		increase,
-		decrease
+		decrease,
+		reset
 	}
 }

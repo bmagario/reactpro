@@ -15,6 +15,9 @@ export interface IProductContextProps {
 	counter: number;
 	increase: () => void;
 	decrease: () => void;
+	reset: () => void;
+	maxCount: number;
+	isMaxCountReached: () => boolean;
 }
 
 export interface IProduct {
@@ -31,4 +34,20 @@ export interface onChangeArgs {
 
 export interface IProductInCart extends IProduct {
 	quantity: number;
+}
+
+export interface InitialValues {
+	quantity?: number;
+	maxCount?: number;
+}
+
+export interface IProductCartHandlers {
+	quantity: number;
+	isMaxCountReached: () => boolean;
+	maxCount?: number;
+	product: IProduct;
+
+	increase: () => void;
+	decrease: () => void;
+	reset: () => void;
 }
