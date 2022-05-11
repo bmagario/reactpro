@@ -12,20 +12,17 @@ export const ShopingPage = () => {
 			<ProductCard 
 				key={ product.id }
 				product={ product }
-				className='bg-dark'
 				initialValues={{
 					quantity: 4,
-					maxCount: 10
+					// maxCount: 10
 				}}
 			>
 				{
 					({ reset }) => (
 						<>
-							<ProductImage className='custom-image'/>
-							<ProductName className='text-white'/>
-							<ProductButtons className='custom-buttons'/>
-
-							<button onClick={reset}>Reset</button>
+							<ProductImage/>
+							<ProductName/>
+							<ProductButtons/>
 						</>
 					)
 				}
